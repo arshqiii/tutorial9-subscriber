@@ -12,3 +12,10 @@ Dari kode yang ditulis sebelumnya snippet kode itu digunakan di fungsi main seba
 ### Simulate Slow Subscriber
 ![alt text](image_1.png)
 Jika dilihat dari chart RabbitMQ diatas, Queued messages mencapai hingga 15, Ini terjadi karena saya melakukan perintah cargo run pada publisher sebanyak 4 kali. Karena publisher mengirim data 5 sekaligus dan saya mengirim data sebanyak 4 kali, maka dengan adanya `thread::sleep(ten_millis);` maka akan ada (4-1) * 5 data message yang queued.
+
+### Simulate Many Subscriber
+![alt text](image_2.png)
+![alt text](image_3.png)
+Chart pada RabbitMQ seperti itu karena terjadi burst publish dari publisher dan proses konsumsi dari beberapa subscriber. Publisher dan subscriber aktif pada waktu yang hampir bersamaan, tapi publisher lebih cepat mengirim daripada subscriber bisa memproses. Akibatnya, antrian sempat menumpuk, tapi lalu turun lagi karena subscriber memproses secara bertahap karena ada delay sleep(1000ms).
+
+Beberapa hal yang bisa di improve dari kode publisher dan subscriber adalah menerapkan method get_handler_action untuk menghindari panic dan mengurangi duplikasi kode pada publisher dengan menggunakan loop.
