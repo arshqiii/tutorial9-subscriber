@@ -8,3 +8,7 @@ AMQP singkatan dari Advanced Message Queuing Protocol yang merupakan sebuah prot
 
 ### b. What does it mean? guest:guest@localhost:5672 , what is the first guest, and what is the second guest, and what is localhost:5672 is for?
 Dari kode yang ditulis sebelumnya snippet kode itu digunakan di fungsi main sebagai URL koneksi ke message broker queue. "guest" pertama merupakan username yang digunakan untuk login ke message broker, "guest" kedua merupakan password dari user guest, dan localhost:5672 merupakan alamat host server sekaligus port default untuk protokol AMQP yang digunakan message broker, dalam kasus ini, RabbitMQ.
+
+### Simulate Slow Subscriber
+![alt text](image_1.png)
+Jika dilihat dari chart RabbitMQ diatas, Queued messages mencapai hingga 15, Ini terjadi karena saya melakukan perintah cargo run pada publisher sebanyak 4 kali. Karena publisher mengirim data 5 sekaligus dan saya mengirim data sebanyak 4 kali, maka dengan adanya `thread::sleep(ten_millis);` maka akan ada (4-1) * 5 data message yang queued.
